@@ -1,3 +1,3 @@
-module github.com/rebay1982/interpreter
+module monkey
 
 go 1.24.6
