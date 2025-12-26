@@ -15,6 +15,8 @@ func TestNextToken(t *testing.T) {
 	};
 	
 	let result = add(five, ten);
+	!=/*5;
+	5 < 10 > 5;
 	`
 
 	tests := []struct {

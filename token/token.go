@@ -9,12 +9,12 @@ const (
 	INT   = "INT"   // 1231485634
 
 	// Operators
-	ASSIGN = "="
-	PLUS   = "+"
-	MINUS = "-"
-	BANG = "!"
+	ASSIGN   = "="
+	PLUS     = "+"
+	MINUS    = "-"
+	BANG     = "!"
 	ASTERISK = "*"
-	SLASH = "/"
+	SLASH    = "/"
 
 	LT = "<"
 	GT = ">"
@@ -35,7 +35,7 @@ const (
 
 var (
 	keywords = map[string]TokenType{
-		"fn": FUNCTION,
+		"fn":  FUNCTION,
 		"let": LET,
 	}
 )

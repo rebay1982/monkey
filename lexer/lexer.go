@@ -64,11 +64,11 @@ func (l *Lexer) NextToken() token.Token {
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
 			tok.Type = token.LookupIdent(tok.Literal)
-			return tok	// return now, avoid the l.readChar because the next char was already read.
+			return tok // return now, avoid the l.readChar because the next char was already read.
 		} else if isDigit(l.ch) {
 			tok.Literal = l.readNumber()
 			tok.Type = token.INT
-			return tok	// return now, avoid the l.readChar because the next char was already read.
+			return tok // return now, avoid the l.readChar because the next char was already read.
 		} else {
 			tok = newToken(token.ILLEGAL, l.ch)
 		}
@@ -106,4 +106,3 @@ func isLetter(ch byte) bool {
 func isDigit(ch byte) bool {
 	return '0' <= ch && ch <= '9'
 }
-
