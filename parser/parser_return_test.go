@@ -7,7 +7,7 @@ import (
 	"monkey/lexer"
 )
 
-func TestREturnStatements(t *testing.T) {
+func TestReturnStatements(t *testing.T) {
 	input := `
 		return 5;
 		return 10;
@@ -35,3 +35,40 @@ func TestREturnStatements(t *testing.T) {
 		}
 	}
 }
+
+// TODO: Need to implement the return value parsing
+//func TestReturnStatements_EXT(t *testing.T) {
+//	tests := []struct {
+//		input         string
+//		expectedValue any
+//	}{
+//		{"return 5;", 5},
+//		{"return true;", true},
+//		{"return foobar;", "foobar"},
+//	}
+//
+//	for _, tt := range tests {
+//		t.Run(tt.input, func(t *testing.T) {
+//			l := lexer.New(tt.input)
+//			p := New(l)
+//			program := p.ParseProgram()
+//			checkParserErrors(t, p)
+//
+//			if len(program.Statements) != 1 {
+//				t.Fatalf("program.Statements does not contain 1 statements. got=%d", len(program.Statements))
+//			}
+//
+//			stmt := program.Statements[0]
+//			returnStmt, ok := stmt.(*ast.ReturnStatement)
+//			if !ok {
+//				t.Fatalf("stmt not *ast.ReturnStatement. got=%T", stmt)
+//			}
+//			if returnStmt.TokenLiteral() != "return" {
+//				t.Fatalf("returnStmt.TokenLiteral not 'return', got %q", returnStmt.TokenLiteral())
+//			}
+//			if testLiteralExpression(t, returnStmt.ReturnValue, tt.expectedValue) {
+//				return
+//			}
+//		})
+//	}
+//}
