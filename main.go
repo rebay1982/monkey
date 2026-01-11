@@ -14,7 +14,7 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Print(repl.MONKEY)
+	fmt.Print(repl.MONKEY_SPLASH)
 	fmt.Println()
 	fmt.Printf("Hello %s, This is the Monkey programming language.\n", user.Username)
 	fmt.Printf("Feel free to type in commands.\n")
