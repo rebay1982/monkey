@@ -10,7 +10,7 @@ import (
 
 func TestEvalIntegerExpression(t *testing.T) {
 	tests := []struct {
-		input string
+		input    string
 		expected int64
 	}{
 		{"5", 5},
@@ -31,7 +31,7 @@ func testEval(input string) object.Object {
 	return Eval(program)
 }
 
-func testIntegerObject (t *testing.T, obj object.Object, expected int64) bool {
+func testIntegerObject(t *testing.T, obj object.Object, expected int64) bool {
 	result, ok := obj.(*object.Integer)
 
 	if !ok {
@@ -41,7 +41,7 @@ func testIntegerObject (t *testing.T, obj object.Object, expected int64) bool {
 
 	if result.Value != expected {
 		t.Errorf("object has wrong value. got=%d, want=%d", result.Value, expected)
-    return false
+		return false
 	}
 
 	return true
