@@ -17,6 +17,7 @@ type Object interface {
 	Inspect() string
 }
 
+// Integer object
 type Integer struct {
 	Value int64
 }
@@ -24,6 +25,7 @@ type Integer struct {
 func (i *Integer) Type() ObjectType { return INTEGER_OBJ }
 func (i *Integer) Inspect() string  { return fmt.Sprintf("%d", i.Value) }
 
+// Boolean object
 type Boolean struct {
 	Value bool
 }
@@ -31,6 +33,7 @@ type Boolean struct {
 func (b *Boolean) Type() ObjectType { return BOOLEAN_OBJ }
 func (b *Boolean) Inspect() string  { return fmt.Sprintf("%t", b.Value) }
 
+// Billion dollar mistake
 type Null struct{}
 
 func (n *Null) Type() ObjectType { return NULL_OBJ }
