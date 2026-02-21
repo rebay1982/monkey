@@ -3,6 +3,7 @@ package object
 import (
 	"bytes"
 	"fmt"
+	"hash/fnv"
 	"strings"
 
 	"monkey/ast"
@@ -14,18 +15,23 @@ type BuiltinFunction func(args ...Object) Object
 const (
 	BOOLEAN_OBJ      = "BOOLEAN"
 	ERROR_OBJ        = "ERROR"
-	FUNCTION_OBJ     = "FUCNTION"
+	FUNCTION_OBJ     = "FUNCTION"
 	INTEGER_OBJ      = "INTEGER"
 	NULL_OBJ         = "NULL"
 	RETURN_VALUE_OBJ = "RETURN_VALUE"
 	STRING_OBJ       = "STRING"
 	BUILTIN_OBJ      = "BUILTIN"
 	ARRAY_OBJ        = "ARRAY"
+	HASH_OBJ         = "HASH"
 )
 
 type Object interface {
 	Type() ObjectType
 	Inspect() string
+}
+
+type Hashable interface {
+	HashKey() HashKey
 }
 
 // Integer object
@@ -35,6 +41,9 @@ type Integer struct {
 
 func (i *Integer) Type() ObjectType { return INTEGER_OBJ }
 func (i *Integer) Inspect() string  { return fmt.Sprintf("%d", i.Value) }
+func (i *Integer) HashKey() HashKey {
+	return HashKey{Type: i.Type(), Value: uint64(i.Value)}
+}
 
 // Boolean object
 type Boolean struct {
@@ -43,6 +52,17 @@ type Boolean struct {
 
 func (b *Boolean) Type() ObjectType { return BOOLEAN_OBJ }
 func (b *Boolean) Inspect() string  { return fmt.Sprintf("%t", b.Value) }
+func (b *Boolean) HashKey() HashKey {
+	var value uint64
+
+	if b.Value {
+		value = 1
+	} else {
+		value = 0
+	}
+
+	return HashKey{Type: b.Type(), Value: value}
+}
 
 // Billion dollar mistake
 type Null struct{}
@@ -92,13 +112,21 @@ func (f *Function) Inspect() string {
 	return out.String()
 }
 
+// STRING object
 type String struct {
 	Value string
 }
 
 func (s *String) Type() ObjectType { return STRING_OBJ }
 func (s *String) Inspect() string  { return s.Value }
+func (s *String) HashKey() HashKey {
+	h := fnv.New64a()
+	h.Write([]byte(s.Value))
 
+	return HashKey{Type: s.Type(), Value: h.Sum64()}
+}
+
+// BUILTIN function object
 type Builtin struct {
 	Fn BuiltinFunction
 }
@@ -110,6 +138,7 @@ type Array struct {
 	Elements []Object
 }
 
+// ARRAY object
 func (ao *Array) Type() ObjectType { return ARRAY_OBJ }
 func (ao *Array) Inspect() string {
 	var out bytes.Buffer
@@ -124,4 +153,35 @@ func (ao *Array) Inspect() string {
 	out.WriteString("]")
 
 	return out.String()
+}
+
+// HASH object
+type Hash struct {
+	Pairs map[HashKey]HashPair
+}
+
+func (h *Hash) Type() ObjectType { return HASH_OBJ }
+func (h *Hash) Inspect() string {
+	var out bytes.Buffer
+
+	pairs := []string{}
+	for _, pair := range h.Pairs {
+		pairs = append(pairs, fmt.Sprintf("%s: %s", pair.Key.Inspect(), pair.Value.Inspect()))
+	}
+
+	out.WriteString("{")
+	out.WriteString(strings.Join(pairs, ", "))
+	out.WriteString("}")
+
+	return out.String()
+}
+
+type HashPair struct {
+	Key   Object
+	Value Object
+}
+
+type HashKey struct {
+	Type  ObjectType
+	Value uint64
 }
